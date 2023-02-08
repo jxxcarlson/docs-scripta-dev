@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jxxcarlson.github.io/docs-scripta-app/collectionDocs/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Collection Documents - Scripta Developer Docs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Collection Documents";
+        var mkdocs_page_input_path = "collectionDocs.md";
+        var mkdocs_page_url = "/docs-scripta-app/collectionDocs/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Scripta Developer Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../mkdocs-info/">Mkdocs Info</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lamdera/">Lamdera</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../L0/">The L0 Markup Language</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../newdocs/">Making a New Document</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../openDoc/">Opening a Document</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../documentIndex/">Document Index</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Collection Documents</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#example">Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#about-the-document-format">About the document format</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#creating-a-collection-document">Creating a collection document</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#adding-a-new-document-to-a-collection">Adding a new document to a collection</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartfolders/">Smart Folders</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../search/">Search</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../stats/">Stats & stuff</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Scripta Developer Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Collection Documents</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="collection-documents">Collection Documents</h1>
+<p>A collection document is a collection of links
+to other documents.</p>
+<h2 id="example">Example</h2>
+<p><img alt="Q" src="https://i.ibb.co/8b4XFpn/image.png" /></p>
+<p>Here is the source text:</p>
+<pre><code class="language-text">| title
+Quantum Mechanics Notes
+
+[tags jxxcarlson:quantum-mechanics-notes, collection]
+
+| collection
+
+| document jxxcarlson:qmnotes-trajectories-uncertainty
+Trajectories and Uncertainty 
+
+| document jxxcarlson:wave-packets-dispersion
+Wave Packets and the Dispersion Relation
+
+...
+</code></pre>
+<h2 id="about-the-document-format">About the document format</h2>
+<p>A collection document is normally written in the
+<a href="/L0/">L0 markup language</a></p>
+<p>The word <code>collection</code> must occur in the 
+<code>tag</code> element, and the block <code>| collection</code>
+is mandatory.</p>
+<p><em>Note to self: simplify this API!</em></p>
+<p>Following this block, there is a series of <code>| document</code>
+blocks.  Such a block takes a single argument, which is
+either the document id or the document slug, which 
+has the form<code>USERNAME:REFERENCE</code>. The <code>document</code> blocks are rendered
+as <code>ilinks</code> (internal links).  Internal links are handled
+by Lamdera via websockets.  Http links would reload the
+app, which is a bad idea.</p>
+<h2 id="creating-a-collection-document">Creating a collection document</h2>
+<p>The bare-metal way to create and update a collection 
+document is to create an ordinary document, then 
+edit its text following the format described above.
+One can also use the <code>New: Collection</code> button in the
+Scripta app.  The button calls 
+<code>Frontend.Update.newCollection</code>. Here, in pictures,
+is the full data flow:</p>
+<p><img alt="New Collection Flow of Control" src="../image/newcollection.jpg" />
+<em>Data flow for creating a collection document</em></p>
+<p>Continuing in words, <code>Frontend.Update.newCollection</code> calls
+<code>Frontend.Update.makeDocument</code>, which invokes the command</p>
+<pre><code>Lamdera.sendToBackend (CreateDocument model.currentUser newDoc)
+</code></pre>
+<p>The message <code>CreateDocument</code> calls 
+<code>Backend.Document.create</code>, which is responsible 
+for creating the document, adding to the application
+store, and sending the resulting document back to the
+frontend via </p>
+<pre><code>Lamdera.sendToFrontend clientId (ReceivedNewDocument handling doc)
+</code></pre>
+<h2 id="adding-a-new-document-to-a-collection">Adding a new document to a collection</h2>
+<p><img alt="Add new document to collection" src="../image/newDocumentInCollection.jpg" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../documentIndex/" class="btn btn-neutral float-left" title="Document Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../smartfolders/" class="btn btn-neutral float-right" title="Smart Folders">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../documentIndex/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../smartfolders/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
