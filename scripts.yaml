@@ -1,0 +1,18 @@
+scripts:
+
+  serve: 
+    - mkdocs serve -a localhost:4001
+    - /usr/bin/open -a /Applications/Google\ Chrome.app http://localhost:4001
+
+  update-site:
+    - mkdocs build
+    - cp -r * site/ /Users/carlson/dev/jxxcarlson.github.io/docs-scripta-dev/
+
+  view-site: /usr/bin/open -a /Applications/Firefox.app https:jxxcarlson.github.io/docs-scripta-dev/
+
+  view-local: /usr/bin/open -a /Applications/Google\ Chrome.app http://localhost:4001
+
+  site-stats: cat docs-scripta-dev/*.md | wc -w
+
+  publish: mkdocs gh-deploy
+
