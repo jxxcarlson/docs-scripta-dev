@@ -14,5 +14,10 @@ scripts:
 
   site-stats: cat docs-scripta-dev/*.md | wc -w
 
-  publish: mkdocs gh-deploy
+  publish:
+    - echo "Push to git repo ..."
+    - git ci -m "update docs" .
+    - git push
+    - echo "Deploy ..."
+    - mkdocs gh-deploy
 
