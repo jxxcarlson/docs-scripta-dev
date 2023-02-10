@@ -1,4 +1,6 @@
-# Synchronization
+# Codemirror Integration
+
+## Sending information to Codemirror
 
 The view function for a document is
 
@@ -48,7 +50,7 @@ The clause `Render msg_` of the update function calls
 
 The important part is the line `editorLineNumber = String.fromInt line`.
 This value is stored in the model.  The view function for the editor subsequently
-reads this value and uses it to scroll the given line into view and highlight it.
+reads this value and uses it to scroll the given line into view and highlight it:
 
 ```elm
 -- View.Editor
