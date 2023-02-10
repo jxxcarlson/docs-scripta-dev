@@ -155,7 +155,8 @@ The clause <code>Render msg_</code> of the update function calls
 </code></pre>
 <p>The important part is the line <code>editorLineNumber = String.fromInt line</code>.
 This value is stored in the model.  The view function for the editor subsequently
-reads this value and uses it to scroll the given line into view and highlight it:</p>
+reads this value and uses it to scroll the given line into view and highlight it
+(see <code>HtmlAttr.attribute "linenumber" ...</code> below).</p>
 <pre><code class="language-elm">-- View.Editor
 view : FrontendModel -&gt; Element FrontendMsg
 view model =
