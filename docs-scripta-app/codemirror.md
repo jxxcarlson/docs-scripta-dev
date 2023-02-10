@@ -53,6 +53,13 @@ This value is stored in the model.  The view function for the editor subsequentl
 reads this value and uses it to scroll the given line into view and highlight it
 (see `HtmlAttr.attribute "linenumber" ... ` below).
 
+**TODO:**
+  - The line in question needs not only to be highlighted
+and brought into view, but also be centered vertically on the
+page.
+  - We need a more granular LR sync -- ideally on the word or
+phrase level.
+  - 
 ```elm
 -- View.Editor
 view : FrontendModel -> Element FrontendMsg
