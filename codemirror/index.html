@@ -157,6 +157,13 @@ The clause <code>Render msg_</code> of the update function calls
 This value is stored in the model.  The view function for the editor subsequently
 reads this value and uses it to scroll the given line into view and highlight it
 (see <code>HtmlAttr.attribute "linenumber" ...</code> below).</p>
+<p><strong>TODO:</strong>
+  - The line in question needs not only to be highlighted
+and brought into view, but also be centered vertically on the
+page.
+  - We need a more granular LR sync -- ideally on the word or
+phrase level.
+  - </p>
 <pre><code class="language-elm">-- View.Editor
 view : FrontendModel -&gt; Element FrontendMsg
 view model =
