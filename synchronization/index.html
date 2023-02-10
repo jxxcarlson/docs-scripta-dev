@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jxxcarlson.github.io/docs-scripta-app/L0/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jxxcarlson.github.io/docs-scripta-app/synchronization/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>The L0 Markup Language - Scripta Developer Docs</title>
+    <title>Synchronization - Scripta Developer Docs</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "The L0 Markup Language";
-        var mkdocs_page_input_path = "L0.md";
-        var mkdocs_page_url = "/docs-scripta-app/L0/";
+        var mkdocs_page_name = "Synchronization";
+        var mkdocs_page_input_path = "synchronization.md";
+        var mkdocs_page_url = "/docs-scripta-app/synchronization/";
       </script>
     
     <script src="../js/jquery-3.6.0.min.js" defer></script>
@@ -52,10 +52,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="../lamdera/">Lamdera</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">The L0 Markup Language</a>
-    <ul class="current">
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../L0/">The L0 Markup Language</a>
                 </li>
               </ul>
               <ul>
@@ -82,8 +80,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../search/">Search</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../synchronization/">Synchronization</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Synchronization</a>
+    <ul class="current">
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -104,7 +104,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>The L0 Markup Language</li>
+      <li>Synchronization</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -113,38 +113,76 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="the-l0-markup-language">The L0 Markup Language</h1>
-<p>The L0 Markup language takes inspiration from Lisp. 
-Text in L0 consists of <em>blocks</em> and <em>elements</em>.
-An element is a span of ordinary text or a function
-element like <code>[i blocks]</code>, where <code>i</code> (for "italic") is
-the function and the rest of the text up to the matching
-right bracket, in this case "blocks", is the function
-argument. Function elements can be nested, e.g.,
-<code>[i [b blocks]]</code>.  In this case "blocks" is rendered
-in bold italic.  One could also write <code>[i special [b blocks]]</code>, 
-in which case "special" would be italicized and "blocks"
-would be rendered in bold italic.</p>
-<p>There are a few special elements: text enclosed
-in backticks for inline code, and text enclosed in 
-dollar signs for inline mathematics, e.g., $a^2 + b^2 = c^2$.</p>
-<p>There are three kinds of blocks: anonymous blocks (paragraphs), 
-named blocks, and verbatim blocks. Blocks are bounded
-above and below by one or more blank lines. An anonymous block,
-aka paragraph, is a sequence of elements containing no
-blank lines.  Named and verbatim blocks consist of a header
-and a body. The header is a line of the form <code>| Name Arguments</code>
-in the case of a named block.  In the case of a verbatim
-block, the header takes the form <code>|| Name Arguments</code>.  The
-body is a sequence of elements containing no
-blank lines.  Blocks may be indented, thus defining a tree
-structure.</p>
+                <h1 id="synchronization">Synchronization</h1>
+<p>The view function for a document is</p>
+<pre><code class="language-elml">viewDocument : 
+   Scripta.API.DisplaySettings 
+   -&gt; Compiler.DifferentialParser.EditRecord 
+   -&gt; List (Element FrontendMsg)
+viewDocument displaySettings editRecord =
+    Scripta.API.render displaySettings editRecord 
+      |&gt; List.map (E.map Render)    
+</code></pre>
+<p>where in module <code>Types</code> we find the variant <code>Render Render.Msg.MarkupMsg</code>
+of type <code>FrontendMsg</code>, and where</p>
+<pre><code class="language-elm">-- Render.Msg
+type MarkupMsg
+    = SendMeta { begin : Int, end : Int, index : Int, id : String }
+    | SendLineNumber Int
+    | SelectId String
+    | HighlightId String
+    | GetPublicDocument Handling String
+    | GetPublicDocumentFromAuthor Handling String String
+    | GetDocumentWithSlug Handling String
+    | ProposeSolution SolutionState
+
+</code></pre>
+<p>When a user clicks on rendered text, a message of type 
+<code>Render (SendLineNumber Int)</code> is sent to the update function of Scripta.
+The clause <code>Render msg_</code> of the update function calls
+<code>Frontend.Update.render model msg_</code>.  In the case of 
+<code>Render.Msg.SendLineNumber line</code> the handler is</p>
+<p><code>-- Frontend.Upate
+  Render.Msg.SendLineNumber line -&gt;
+    ( { model
+        | selectedId = ""
+        , messages = [ { txt = "Line " ++ String.fromInt (line + 1), status = MSGreen } ]
+        , editorLineNumber = String.fromInt line
+      }
+    , Command.none
+    )</code>
+The important part is the line <code>editorLineNumber = String.fromInt line</code>.
+This value is stored in the model.  The view function for the editor subsequently
+reads this value and uses it to scroll the given line into view and highlight it.</p>
+<p><code>elm
+-- View.Editor
+view : FrontendModel -&gt; Element FrontendMsg
+view model =
+    Element.Keyed.el
+        [ -- RECEIVE INFORMATION FROM CODEMIRROR
+          E.htmlAttribute onSelectionChange 
+        , E.htmlAttribute onTextChange 
+        , E.htmlAttribute onCursorChange 
+        , htmlId "editor-here"
+        ...
+        ]
+        ( stringOfBool model.showEditor
+        , E.html
+            (Html.node "codemirror-editor"
+                [ -- SEND INFORMATION TO CODEMIRROR
+                , HtmlAttr.attribute "linenumber" (shiftLineNumber model.language model.editorLineNumber)
+                , HtmlAttr.attribute "selection" (stringOfBool model.doSync)
+                , HtmlAttr.attribute "editcommand" (OTCommand.toString model.editCommand.counter model.editCommand.command)
+                ]
+                []
+            )
+        )</code></p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../lamdera/" class="btn btn-neutral float-left" title="Lamdera"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../newdocs/" class="btn btn-neutral float-right" title="Making a New Document">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../search/" class="btn btn-neutral float-left" title="Search"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../stats/" class="btn btn-neutral float-right" title="Stats & stuff">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -167,10 +205,10 @@ structure.</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../lamdera/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../search/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../newdocs/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../stats/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
