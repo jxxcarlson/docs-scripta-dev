@@ -11,6 +11,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://jxxcarlson.github.io/docs-scripta-app/codemirror/</loc>
+         <lastmod>2023-02-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://jxxcarlson.github.io/docs-scripta-app/collectionDocs/</loc>
          <lastmod>2023-02-10</lastmod>
          <changefreq>daily</changefreq>
@@ -52,11 +57,6 @@
     </url>
     <url>
          <loc>https://jxxcarlson.github.io/docs-scripta-app/stats/</loc>
-         <lastmod>2023-02-10</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://jxxcarlson.github.io/docs-scripta-app/synchronization/</loc>
          <lastmod>2023-02-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
