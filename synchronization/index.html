@@ -123,8 +123,7 @@ viewDocument displaySettings editRecord =
     Scripta.API.render displaySettings editRecord 
       |&gt; List.map (E.map Render)    
 </code></pre>
-<p>where in module <code>Types</code> we find the variant <code>Render Render.Msg.MarkupMsg</code>
-of type <code>FrontendMsg</code>, and where</p>
+<p>where in module <code>Types</code> we find the</p>
 <pre><code class="language-elm">-- Render.Msg
 type MarkupMsg
     = SendMeta { begin : Int, end : Int, index : Int, id : String }
@@ -135,27 +134,26 @@ type MarkupMsg
     | GetPublicDocumentFromAuthor Handling String String
     | GetDocumentWithSlug Handling String
     | ProposeSolution SolutionState
-
 </code></pre>
 <p>When a user clicks on rendered text, a message of type 
 <code>Render (SendLineNumber Int)</code> is sent to the update function of Scripta.
 The clause <code>Render msg_</code> of the update function calls
 <code>Frontend.Update.render model msg_</code>.  In the case of 
 <code>Render.Msg.SendLineNumber line</code> the handler is</p>
-<p><code>-- Frontend.Upate
+<pre><code class="language-elm">  -- Frontend.Upate
   Render.Msg.SendLineNumber line -&gt;
     ( { model
-        | selectedId = ""
-        , messages = [ { txt = "Line " ++ String.fromInt (line + 1), status = MSGreen } ]
+        | selectedId = &quot;&quot;
+        , messages = [ { txt = &quot;Line &quot; ++ String.fromInt (line + 1), status = MSGreen } ]
         , editorLineNumber = String.fromInt line
       }
     , Command.none
-    )</code>
-The important part is the line <code>editorLineNumber = String.fromInt line</code>.
+    )
+</code></pre>
+<p>The important part is the line <code>editorLineNumber = String.fromInt line</code>.
 This value is stored in the model.  The view function for the editor subsequently
 reads this value and uses it to scroll the given line into view and highlight it.</p>
-<p><code>elm
--- View.Editor
+<pre><code class="language-elm">-- View.Editor
 view : FrontendModel -&gt; Element FrontendMsg
 view model =
     Element.Keyed.el
@@ -163,20 +161,21 @@ view model =
           E.htmlAttribute onSelectionChange 
         , E.htmlAttribute onTextChange 
         , E.htmlAttribute onCursorChange 
-        , htmlId "editor-here"
+        , htmlId &quot;editor-here&quot;
         ...
         ]
         ( stringOfBool model.showEditor
         , E.html
-            (Html.node "codemirror-editor"
+            (Html.node &quot;codemirror-editor&quot;
                 [ -- SEND INFORMATION TO CODEMIRROR
-                , HtmlAttr.attribute "linenumber" (shiftLineNumber model.language model.editorLineNumber)
-                , HtmlAttr.attribute "selection" (stringOfBool model.doSync)
-                , HtmlAttr.attribute "editcommand" (OTCommand.toString model.editCommand.counter model.editCommand.command)
+                , HtmlAttr.attribute &quot;linenumber&quot; (shiftLineNumber model.language model.editorLineNumber)
+                , HtmlAttr.attribute &quot;selection&quot; (stringOfBool model.doSync)
+                , HtmlAttr.attribute &quot;editcommand&quot; (OTCommand.toString model.editCommand.counter model.editCommand.command)
                 ]
                 []
             )
-        )</code></p>
+        )
+</code></pre>
               
             </div>
           </div><footer>
