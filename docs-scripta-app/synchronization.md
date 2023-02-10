@@ -12,8 +12,8 @@ viewDocument displaySettings editRecord =
       |> List.map (E.map Render)    
 ```
 
-where in module `Types` we find the variant `Render Render.Msg.MarkupMsg`
-of type `FrontendMsg`, and where
+where in module `Types` we find the
+
 ```elm
 -- Render.Msg
 type MarkupMsg
@@ -25,7 +25,6 @@ type MarkupMsg
     | GetPublicDocumentFromAuthor Handling String String
     | GetDocumentWithSlug Handling String
     | ProposeSolution SolutionState
-
 ```
 
 
@@ -35,7 +34,7 @@ The clause `Render msg_` of the update function calls
 `Frontend.Update.render model msg_`.  In the case of 
 `Render.Msg.SendLineNumber line` the handler is
 
-```
+```elm
   -- Frontend.Upate
   Render.Msg.SendLineNumber line ->
     ( { model
@@ -45,7 +44,8 @@ The clause `Render msg_` of the update function calls
       }
     , Command.none
     )
- ```
+```
+
 The important part is the line `editorLineNumber = String.fromInt line`.
 This value is stored in the model.  The view function for the editor subsequently
 reads this value and uses it to scroll the given line into view and highlight it.
@@ -73,4 +73,4 @@ view model =
                 []
             )
         )
- ```
+```
