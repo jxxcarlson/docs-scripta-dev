@@ -50,14 +50,33 @@ The clause `Render msg_` of the update function calls
 
 The important part is the line `editorLineNumber = String.fromInt line`.
 This value is stored in the model.  The view function for the editor subsequently
-reads this value and uses it to scroll the given line into view and highlight it
+reads this value and communicates it to Codemirror 
+it to scroll the given line into view and highlight it.  
+Here is the relevant part of `editor.js`:
+
+
 (see `HtmlAttr.attribute "linenumber" ... ` below).
+
+```javascript
+case "linenumber":
+     console.log("!!!@ IN linenumber !")
+      // receive info from Elm (see Main.editor_)
+      // scroll the editor to the given line
+       var lineNumber = parseInt(newVal) + 2
+       var loc =  editor.state.doc.line(lineNumber)
+       console.log("Attr case lineNumber", loc)
+       console.log("position", loc.from)
+       editor.dispatch({selection: {anchor: parseInt(loc.from)}})
+       editor.scrollPosIntoView(loc.from + 400)
+    break
+```
 
 **TODO:**
 
-  - The line in question needs not only to be highlighted
-and brought into view, but also be centered vertically on the
-page.
+  - The `+ 400` part of the code ensures that the source text is scrolled up 
+somewhat from the bottom margin of the editor.  We need to make this conditional
+on the line number, so that if the line number is too small, the text is not
+scrolled up too far.
 
   - We need a more granular LR sync -- ideally on the word or
 phrase level.
