@@ -155,14 +155,29 @@ The clause <code>Render msg_</code> of the update function calls
 </code></pre>
 <p>The important part is the line <code>editorLineNumber = String.fromInt line</code>.
 This value is stored in the model.  The view function for the editor subsequently
-reads this value and uses it to scroll the given line into view and highlight it
-(see <code>HtmlAttr.attribute "linenumber" ...</code> below).</p>
+reads this value and communicates it to Codemirror 
+it to scroll the given line into view and highlight it.<br />
+Here is the relevant part of <code>editor.js</code>:</p>
+<p>(see <code>HtmlAttr.attribute "linenumber" ...</code> below).</p>
+<pre><code class="language-javascript">case &quot;linenumber&quot;:
+     console.log(&quot;!!!@ IN linenumber !&quot;)
+      // receive info from Elm (see Main.editor_)
+      // scroll the editor to the given line
+       var lineNumber = parseInt(newVal) + 2
+       var loc =  editor.state.doc.line(lineNumber)
+       console.log(&quot;Attr case lineNumber&quot;, loc)
+       console.log(&quot;position&quot;, loc.from)
+       editor.dispatch({selection: {anchor: parseInt(loc.from)}})
+       editor.scrollPosIntoView(loc.from + 400)
+    break
+</code></pre>
 <p><strong>TODO:</strong></p>
 <ul>
 <li>
-<p>The line in question needs not only to be highlighted
-and brought into view, but also be centered vertically on the
-page.</p>
+<p>The <code>+ 400</code> part of the code ensures that the source text is scrolled up 
+somewhat from the bottom margin of the editor.  We need to make this conditional
+on the line number, so that if the line number is too small, the text is not
+scrolled up too far.</p>
 </li>
 <li>
 <p>We need a more granular LR sync -- ideally on the word or
