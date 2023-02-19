@@ -83,6 +83,24 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Codemirror</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#custom-element">Custom Element</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#communication-between-elm-and-codemirror">Communication between Elm and Codemirror</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#codemirror-side">Codemirror side</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#elm-side">Elm side</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#left-to-right-sync">Left to Right Sync</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#data-flow">Data flow</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#code">Code</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#sending-information-to-codemirror">Sending information to Codemirror</a>
     </li>
     </ul>
@@ -116,6 +134,59 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="codemirror-integration">Codemirror Integration</h1>
+<h2 id="custom-element">Custom Element</h2>
+<h2 id="communication-between-elm-and-codemirror">Communication between Elm and Codemirror</h2>
+<h2 id="codemirror-side">Codemirror side</h2>
+<p>On the Codemirror side, communication with Elm is handled by
+function <code>AttributeChangedCallback(attr, oldVal, newVal)</code>.</p>
+<h3 id="elm-side">Elm side</h3>
+<p>The handler is <code>View.Editor.view</code>:</p>
+<p><strong>Receive information from Codemirror</strong></p>
+<ul>
+<li><code>E.htmlAttribute onSelectionChange</code></li>
+<li><code>E.htmlAttribute onTextChange</code></li>
+<li><code>E.htmlAttribute onCursorChange</code></li>
+</ul>
+<p><strong>Send information to Codemirror</strong></p>
+<ul>
+<li><code>HtmlAttr.attribute "text" model.initialText</code></li>
+<li><code>HtmlAttr.attribute "editordata" (fixEditorData model.language model.editorData |&gt; encodeEditorData)</code></li>
+<li><code>HtmlAttr.attribute "selection" (stringOfBool model.doSync</code></li>
+<li><code>HtmlAttr.attribute "editcommand" (OTCommand.toString model.editCommand.counter model.editCommand.command</code></li>
+</ul>
+<h2 id="left-to-right-sync">Left to Right Sync</h2>
+<h3 id="data-flow">Data flow</h3>
+<ol>
+<li>User presses ctl-S; A <code>KeyMsg keyMsg</code> is received and passed to <code>EditorSync.handleKeypress</code></li>
+<li><code>handleKeypress</code> inspects the message.  If it is ctrl-S, <code>model.doSync</code> is toggled.  This
+is a signal, via <code>HtmlAttr.attribute "selection" (stringOfBool model.doSync)</code> in <code>Editor.view</code>
+to Codemirror send the text that has been selected in the edtor back to Elm .  Codemirror
+does this via function <code>sendSelectedText</code> which creates the event "selected-text"</li>
+<li>The "selected-text" event is detected by the editor which sends the Elm message <code>SelectedText str</code>
+to the frontend.  That message calls <code>Frontend.EditorSync.firstSyncLR model str</code>
+This function issues a command to bring ....</li>
+</ol>
+<h3 id="code">Code</h3>
+<ul>
+<li><code>model.doSync</code></li>
+<li>Message <code>StartSync</code>: toggle <code>model.doSync</code></li>
+<li>Message <code>NextSync</code></li>
+</ul>
+<pre><code class="language-elm">SelectedText str -&gt;
+    Frontend.EditorSync.firstSyncLR model str
+
+SendSyncLR -&gt;
+    ( { model | syncRequestIndex = model.syncRequestIndex + 1 }, Effect.Command.none )
+
+SyncLR -&gt;
+    Frontend.EditorSync.syncLR model
+
+StartSync -&gt;
+    ( { model | doSync = not model.doSync }, Effect.Command.none )
+
+NextSync -&gt;
+    Frontend.EditorSync.nextSyncLR model
+</code></pre>
 <h2 id="sending-information-to-codemirror">Sending information to Codemirror</h2>
 <p>The view function for a document is</p>
 <pre><code class="language-elml">viewDocument : 
