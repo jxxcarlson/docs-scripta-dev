@@ -1,5 +1,73 @@
 # Codemirror Integration
 
+## Custom Element
+
+
+
+## Communication between Elm and Codemirror
+
+## Codemirror side
+
+On the Codemirror side, communication with Elm is handled by
+function `AttributeChangedCallback(attr, oldVal, newVal)`.
+
+
+### Elm side
+
+The handler is `View.Editor.view`:
+
+
+**Receive information from Codemirror**
+
+- `E.htmlAttribute onSelectionChange`
+- `E.htmlAttribute onTextChange`
+- `E.htmlAttribute onCursorChange`
+
+**Send information to Codemirror**
+
+- `HtmlAttr.attribute "text" model.initialText`
+- `HtmlAttr.attribute "editordata" (fixEditorData model.language model.editorData |> encodeEditorData)`
+- `HtmlAttr.attribute "selection" (stringOfBool model.doSync`
+- `HtmlAttr.attribute "editcommand" (OTCommand.toString model.editCommand.counter model.editCommand.command`
+
+
+## Left to Right Sync
+
+### Data flow
+
+1. User presses ctl-S; A `KeyMsg keyMsg` is received and passed to `EditorSync.handleKeypress`
+2. `handleKeypress` inspects the message.  If it is ctrl-S, `model.doSync` is toggled.  This
+is a signal, via `HtmlAttr.attribute "selection" (stringOfBool model.doSync)` in `Editor.view`
+to Codemirror send the text that has been selected in the edtor back to Elm .  Codemirror
+does this via function `sendSelectedText` which creates the event "selected-text"
+3. The "selected-text" event is detected by the editor which sends the Elm message `SelectedText str`
+to the frontend.  That message calls `Frontend.EditorSync.firstSyncLR model str`
+This function issues a command to bring ....
+
+
+### Code
+
+- `model.doSync`
+- Message `StartSync`: toggle `model.doSync`
+- Message `NextSync`
+
+```elm
+SelectedText str ->
+    Frontend.EditorSync.firstSyncLR model str
+
+SendSyncLR ->
+    ( { model | syncRequestIndex = model.syncRequestIndex + 1 }, Effect.Command.none )
+
+SyncLR ->
+    Frontend.EditorSync.syncLR model
+
+StartSync ->
+    ( { model | doSync = not model.doSync }, Effect.Command.none )
+
+NextSync ->
+    Frontend.EditorSync.nextSyncLR model
+```
+
 ## Sending information to Codemirror
 
 The view function for a document is
