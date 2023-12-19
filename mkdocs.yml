@@ -1,8 +1,9 @@
 site_name: Scripta Developer Docs
 site_url: https://jxxcarlson.github.io/docs-scripta-app
 docs_dir: 'docs-scripta-app'
+dev_addr: '127.0.0.1:8202'
 
-theme: readthedocs
+theme: material
 
 
 nav:
@@ -12,11 +13,13 @@ nav:
   - The L0 Markup Language: 'L0.md'
   - Making a New Document: 'newdocs.md'
   - Opening a Document: 'openDoc.md'
+  - Loading data into a document: 'data.md'
   - Document Index: 'documentIndex.md'
   - Collection Documents: 'collectionDocs.md'
   - Smart Folders: 'smartfolders.md'
   - Search: 'search.md'
   - Codemirror: 'codemirror.md'
-  - 'stats.md'
+  - PDF Server: 'pdfServer.md'
+  - Stats: 'stats.md'
 
 
